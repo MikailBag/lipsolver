@@ -1,0 +1,25 @@
+name: shekel
+runCommand:
+  argv:
+  - python3
+  - main.py
+  env:
+    PYTHONPATH: ../util
+supportsExactMinimum: false
+supportsLipschitzConst: false
+parameters:
+  - name: kind
+    var: P_KIND
+  - name: $seed
+    var: P_SEED
+---
+name: sin_sum
+runCommand:
+  argv:
+  - python3
+  - main.py
+supportsExactMinimum: true
+supportsLipschitzConst: true
+parameters:
+  - name: $seed
+    var: P_SEED
