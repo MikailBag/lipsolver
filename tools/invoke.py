@@ -13,7 +13,7 @@ if __name__ == '__main__':
     p.add_argument('--problem', type=str, required=True)
     p.add_argument('--query-limit', type=int, required=True)
     p.add_argument('--raw-log', type=str, required=True)
-    p.add_argument('--timeout', type=int, default=30)
+    p.add_argument('--timeout', type=int, required=True)
     args = p.parse_args()
 
     solver_sock, oracle_sock = socket.socketpair()
