@@ -30,7 +30,7 @@ if __name__ == '__main__':
     spec = yaml.safe_load(open(args.spec))
     spec = Spec(spec)
 
-    problems = load_problems()
+    problems = load_problems(spec)
     for problem_idx in range(len(problems)):
         problem = problems[problem_idx]
         print(f"running solvers on problem {problem_idx}/{len(problems)}")
