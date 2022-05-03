@@ -1,0 +1,23 @@
+name: CI
+on: push
+jobs:
+  push:
+    permissions: {}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure Yandex Clous access
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
+          aws configure set default.region ru-central1
+      - uses: actions/checkout@v3
+      - name: Prepare for CI
+        run: mkdir build
+      - name: Install dependencies
+        run: pip3 install -r requirements.txt
+      - name: Generate test data
+        run: python3 tools/prepare_tests.py all-tests.yaml > build/tests.txt
+      - name: Upload artifacts
+        run: | 
+          aws --endpoint-url=https://storage.yandexcloud.net \
+          s3 cp --recursive build/ s3://lipsolver-data/latest/
