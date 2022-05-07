@@ -34,9 +34,9 @@ def load_generators():
 
 
 def main():
-    print("loading generators")
+    print("loading generators", file=sys.stderr)
     generators = load_generators()
-    print("building test set")
+    print("building test set", file=sys.stderr)
     profile = open(sys.argv[1])
     profile = yaml.safe_load(profile)
     rng = random.Random()
@@ -46,7 +46,8 @@ def main():
         suite_rng = random.Random()
         suite_rng.seed(suite_seed)
         print(
-            f"Generating {req['count']} functions using generator {req['name']} with seed {suite_seed}")
+            f"Generating {req['count']} functions using generator {req['name']} with seed {suite_seed}",
+            file=sys.stderr)
         for generator in generators:
             if generator.name == req['name']:
                 gen = generator
