@@ -7,6 +7,7 @@ import gridsearch as gs
 import sympy as sym
 import json
 import sys
+import math
 
 
 class ShekelGen:
@@ -20,7 +21,6 @@ class ShekelGen:
         a_range: the range for a parameter
         c_range: the range for c parameter
         N: number of terms in the sum
-        digits: number of rounded digits in function coefficients
         gs_step: the grid step size
     """
 
@@ -29,7 +29,6 @@ class ShekelGen:
         self.a_range = (0,10)
         self.c_range = (0.1, 0.3)
         self.N = 10
-        self.digits = 5
         self.gs_step = 1e-5
 
     def gen_one_problem(self, reverse = False):
@@ -43,11 +42,16 @@ class ShekelGen:
             dict describing problem
         """
         formula = ""
-        for i in range(0,self.N):
+        max_slope = 0.0
+        for i in range(0, self.N):
             a = random.uniform(self.a_range[0], self.a_range[1])
             k = random.uniform(self.k_range[0], self.k_range[1])
             c = random.uniform(self.c_range[0], self.c_range[1])
-            term = ("1./(" if reverse else "-1/(") + str(round(k*k, self.digits)) + " * (10. * x - " + str(round(a, self.digits)) + ")^2 + " + str(round(c, self.digits)) + ")"
+            term = ("1./(" if reverse else "-1/(") + str(k*k) + " * (10. * x - " + str(a) + ")^2 + " + str(c) + ")"
+            # function (modulo details): 1/(k * x^2 + c)
+            # derivative (2kx)/(kx^2+c)^2
+            # Wolfram says global maxima fo derivative is \frac{3\sqrt{3}}{8}\sqrt{\frac{k}{c^3}}
+            max_slope += 3 * math.sqrt(3) / 8.0 * k / (c ** 1.5)
             formula += term if i == 0 else " + " + term
 
         sym_objective = sym.sympify(formula)
@@ -56,7 +60,7 @@ class ShekelGen:
         a = 0.
         b = 1.
         true_min = gs.grid_search(objective, a, b, self.gs_step)
-        dct = dict(objective=formula, a=0., b=1., min_f=round(true_min[1], self.digits), min_x=round(true_min[0], self.digits))
+        dct = dict(objective=formula, a=0., b=1., min_f=true_min[1], min_x=true_min[0], max_slope=max_slope)
         return dct
 
 if __name__ == "__main__":

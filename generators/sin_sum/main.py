@@ -45,7 +45,7 @@ if __name__ == "__main__":
         'b': math.pi,
         'min_f': 0,
         'min_x': 1,
-        'lipschitz': lipschitz
+        'max_slope': lipschitz
     }
 
     json.dump(problem, sys.stdout)
