@@ -95,8 +95,8 @@ def eval_at(x):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Read algorithm parameters')
-    parser.add_argument('--area_begin', type=float, required=True)
-    parser.add_argument('--area_end', type=float, required=True)
+    parser.add_argument('--area-begin', type=float, required=True)
+    parser.add_argument('--area-end', type=float, required=True)
     parser.add_argument('--precision', type=float, required=True)
     args = parser.parse_args()
       
