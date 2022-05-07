@@ -21,7 +21,7 @@ def make_term():
     external_coef = gen_coef()
     internal_coef = gen_coef()
     shift = 0
-    return str(external_coef) + "*sin^2(" + str(internal_coef) + "*x + " + str(shift) + ")", external_coef
+    return str(external_coef) + "*sin(" + str(internal_coef) + "*x + " + str(shift) + ")**2", external_coef
 
 
 def generate_formula(seed):

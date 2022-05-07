@@ -56,6 +56,7 @@ def main():
             raise Exception("unknown generator requested")
         for i in range(req['count']):
             gen.invoke(req.get('params', dict()), suite_rng.randint(0, 2**30))
+            print(flush=True)
 
 
 if __name__ == '__main__':

@@ -47,7 +47,7 @@ class ShekelGen:
             a = random.uniform(self.a_range[0], self.a_range[1])
             k = random.uniform(self.k_range[0], self.k_range[1])
             c = random.uniform(self.c_range[0], self.c_range[1])
-            term = ("1./(" if reverse else "-1/(") + str(k*k) + " * (10. * x - " + str(a) + ")^2 + " + str(c) + ")"
+            term = ("1./(" if reverse else "-1/(") + str(k*k) + " * (10. * x - " + str(a) + ")**2 + " + str(c) + ")"
             # function (modulo details): 1/(k * x^2 + c)
             # derivative (2kx)/(kx^2+c)^2
             # Wolfram says global maxima fo derivative is \frac{3\sqrt{3}}{8}\sqrt{\frac{k}{c^3}}
