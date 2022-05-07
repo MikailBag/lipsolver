@@ -3,6 +3,7 @@ import typing
 import argparse
 import sys
 import socket
+import math
 
 class Problem:
     a: float
@@ -12,7 +13,7 @@ class Problem:
     def __init__(self, a: float, b: float, objective: str, **_) -> None:
         self.a = a
         self.b = b
-        self.func = lambda x: eval(objective, {'x': x})
+        self.func = lambda x: eval(objective, {'x': x, 'sin': math.sin})
 
 class Logger:
     def __init__(self, log_path) -> None:
@@ -50,8 +51,7 @@ if __name__ == '__main__':
     })
     while True:
         line = sock_r.readline()
-        if line == "STOP":
-            print("All queries were processed", file=sys.stderr)
+        if line.strip() == "STOP":
             point = float(sock_r.readline().strip())
             result = problem.func(point)
             event = {
@@ -63,7 +63,6 @@ if __name__ == '__main__':
             break
         f = float(line.strip())
         if remaining == step:
-            print("Query limit exceeded", file=sys.stderr)
             logger.log({
                 'type': 'Fail',
                 'reason': 'QueryLimitExceeded'

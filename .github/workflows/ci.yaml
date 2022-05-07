@@ -17,6 +17,8 @@ jobs:
         run: pip3 install -r requirements.txt
       - name: Generate test data
         run: python3 tools/prepare_tests.py all-tests.yaml > build/problems.txt
+      - name: Run solvers on generated tests
+        run: python3 run.py --spec spec.yaml --logs-dir build
       - name: Extract branch name
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
         id: extract_branch

@@ -152,6 +152,7 @@ if __name__ == '__main__':
     parser.add_argument('--area-end', type=float, required=True)
     parser.add_argument('--precision', type=float, required=False)
     parser.add_argument('--step-counter', type=int, required=True)
+    parser.add_argument('--max-slope', type=float, required=True)
     args = parser.parse_args()
     
     start_time = time.time()

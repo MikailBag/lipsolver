@@ -8,5 +8,5 @@ generate:
     count: 10
     params:
       kind: reverse
-  - name: sin_sum
-    count: 10
+  #- name: sin_sum
+  #  count: 10

@@ -38,6 +38,9 @@ if __name__ == '__main__':
 
     oracle = subprocess.Popen(oracle_cmd, stdin=oracle_sock, stdout=None)
 
+    solver_sock.close()
+    oracle_sock.close()
+
     oracle.wait(args.timeout)
     solver.wait(args.timeout)
     if oracle.returncode != 0:

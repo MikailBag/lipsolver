@@ -98,9 +98,10 @@ if __name__ == '__main__':
     parser.add_argument('--area-begin', type=float, required=True)
     parser.add_argument('--area-end', type=float, required=True)
     parser.add_argument('--precision', type=float, required=True)
+    parser.add_argument('--max-slope', type=float, required=True)
     args = parser.parse_args()
       
-    algo = Algorithm(APrioriGivenEstimate(10), GeometricMethod(), OptimisticLocalImprovement())
+    algo = Algorithm(APrioriGivenEstimate(args.max_slope), GeometricMethod(), OptimisticLocalImprovement())
 
     result = find_min(eval_at, args.area_begin, args.area_end, args.precision, algo)
     print('STOP\n', "%.10f" % result, sep='', flush=True)
