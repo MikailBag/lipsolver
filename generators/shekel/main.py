@@ -7,6 +7,7 @@ import gridsearch as gs
 import sympy as sym
 import json
 import sys
+import math
 
 
 class ShekelGen:
@@ -41,11 +42,16 @@ class ShekelGen:
             dict describing problem
         """
         formula = ""
-        for i in range(0,self.N):
+        max_slope = 0.0
+        for i in range(0, self.N):
             a = random.uniform(self.a_range[0], self.a_range[1])
             k = random.uniform(self.k_range[0], self.k_range[1])
             c = random.uniform(self.c_range[0], self.c_range[1])
             term = ("1./(" if reverse else "-1/(") + str(k*k) + " * (10. * x - " + str(a) + ")^2 + " + str(c) + ")"
+            # function (modulo details): 1/(k * x^2 + c)
+            # derivative (2kx)/(kx^2+c)^2
+            # Wolfram says global maxima fo derivative is \frac{3\sqrt{3}}{8}\sqrt{\frac{k}{c^3}}
+            max_slope += 3 * math.sqrt(3) / 8.0 * k / (c ** 1.5)
             formula += term if i == 0 else " + " + term
 
         sym_objective = sym.sympify(formula)
@@ -54,7 +60,7 @@ class ShekelGen:
         a = 0.
         b = 1.
         true_min = gs.grid_search(objective, a, b, self.gs_step)
-        dct = dict(objective=formula, a=0., b=1., min_f=true_min[1], min_x=true_min[0])
+        dct = dict(objective=formula, a=0., b=1., min_f=true_min[1], min_x=true_min[0], max_slope=max_slope)
         return dct
 
 if __name__ == "__main__":
