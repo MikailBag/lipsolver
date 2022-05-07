@@ -16,11 +16,13 @@ jobs:
       - name: Install dependencies
         run: pip3 install -r requirements.txt
       - name: Generate test data
-        run: python3 tools/prepare_tests.py all-tests.yaml > build/tests.txt
+        run: python3 tools/prepare_tests.py all-tests.yaml > build/problems.txt
       - name: Extract branch name
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
         id: extract_branch
+        if: 'always()'
       - name: Upload artifacts
         run: | 
           aws --endpoint-url=https://storage.yandexcloud.net \
-          s3 cp --recursive build/ s3://lipsolver-data/${{ steps.extract_branch.outputs.branch }}/
+          s3 cp --recursive build/ s3://lipsolver-data/ci-${{ steps.extract_branch.outputs.branch }}/
+        if: 'always()'
