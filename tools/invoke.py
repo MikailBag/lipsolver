@@ -12,6 +12,7 @@ if __name__ == '__main__':
     p.add_argument('--problem', type=str, required=True)
     p.add_argument('--query-limit', type=int, required=True)
     p.add_argument('--raw-log', type=str, required=True)
+    p.add_argument('--debug-log', type=str, required=True)
     p.add_argument('--timeout', type=int, required=True)
     p.add_argument('--desired-precision', type=float, required=True)
     p.add_argument('--solver-arg', action='append')
@@ -29,7 +30,7 @@ if __name__ == '__main__':
         solver_cmd.append(arg)
 
     solver = subprocess.Popen(
-        solver_cmd, stdin=solver_sock, stdout=solver_sock)
+        solver_cmd, stdin=solver_sock, stdout=solver_sock, stderr=open(args.debug_log, 'w'))
     oracle_cmd = ['python3', args.oracle]
     oracle_cmd += ['--problem', args.problem]
     oracle_cmd += ['--log', args.raw_log]
