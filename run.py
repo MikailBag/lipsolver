@@ -60,7 +60,8 @@ if __name__ == '__main__':
             invoke_args += ['--problem', problem]
             invoke_args += ['--query-limit', str(spec.query_limit)]
             invoke_args += ['--timeout', str(spec.timeout_secs)]
-            invoke_args += ['--raw-log', args.logs_dir + '/' + test_id + '.txt']
+            invoke_args += ['--debug-log', args.logs_dir + '/' + test_id + '-debug.txt']
+            invoke_args += ['--raw-log', args.logs_dir + '/' + test_id + '-oracle.txt']
             invoke_args += ['--desired-precision', str(10**(spec.precision))]
             invoke_args += [f"--solver-arg=--max-slope={problem_data['max_slope']}"]
             for arg in s.extra_args:
