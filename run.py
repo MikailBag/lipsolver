@@ -4,15 +4,25 @@ import yaml
 import typing
 import subprocess
 
+
+class SolverSpec:
+    name: str
+    extra_args: str
+
+    def __init__(self, obj) -> None:
+        self.name = obj['name']
+        self.extra_args = obj.get('extraArgs', [])
+
+
 class Spec:
-    solvers: typing.List[str]
+    solvers: typing.List[SolverSpec]
     problems_file: str
     query_limit: int
     timeout_secs: int
     precision: float
 
     def __init__(self, obj) -> None:
-        self.solvers = obj['solvers']
+        self.solvers = list(map(SolverSpec, obj['solvers']))
         self.problems_file = obj['problemsFile']
         self.query_limit = obj['queryLimit']
         self.timeout_secs = obj['timeoutSecs']
@@ -42,10 +52,10 @@ if __name__ == '__main__':
         problem_data = json.loads(problem)
         print(f"running solvers on problem {problem_idx}/{len(problems)}")
         for s in spec.solvers:
-            test_id = f"{s}-{problem_idx}"
-            print(f"running solver {s}")
+            test_id = f"{s.name}-{problem_idx}"
+            print(f"running solver {s.name}")
             invoke_args = ['python3', 'tools/invoke.py']
-            invoke_args += ['--solver', 'solvers/' + s + '.py' ]
+            invoke_args += ['--solver', 'solvers/' + s.name + '.py' ]
             invoke_args += ['--oracle', './oracle.py']
             invoke_args += ['--problem', problem]
             invoke_args += ['--query-limit', str(spec.query_limit)]
@@ -53,6 +63,8 @@ if __name__ == '__main__':
             invoke_args += ['--raw-log', args.logs_dir + '/' + test_id + '.txt']
             invoke_args += ['--desired-precision', str(10**(spec.precision))]
             invoke_args += [f"--solver-arg=--max-slope={problem_data['max_slope']}"]
+            for arg in s.extra_args:
+                invoke_args.append(f"--solver-arg={arg}")
 
             subprocess.check_call(invoke_args)
 

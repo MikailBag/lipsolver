@@ -1,5 +1,8 @@
 solvers:
-  - solver
+  - name: solver
+  - name: direct1d
+    extraArgs:
+      - --step-counter=3
 problemsFile: build/problems.txt
 queryLimit: 100000
 timeoutSecs: 60
