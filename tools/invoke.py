@@ -14,6 +14,7 @@ if __name__ == '__main__':
     p.add_argument('--raw-log', type=str, required=True)
     p.add_argument('--timeout', type=int, required=True)
     p.add_argument('--desired-precision', type=float, required=True)
+    p.add_argument('--solver-arg', action='append')
     args = p.parse_args()
 
     solver_sock, oracle_sock = socket.socketpair()
@@ -24,6 +25,8 @@ if __name__ == '__main__':
     solver_cmd += ['--area-begin', str(problem['a'])]
     solver_cmd += ['--area-end', str(problem['b'])]
     solver_cmd += ['--precision', str(args.desired_precision)]
+    for arg in args.solver_arg:
+        solver_cmd.append(arg)
 
     solver = subprocess.Popen(
         solver_cmd, stdin=solver_sock, stdout=solver_sock)
