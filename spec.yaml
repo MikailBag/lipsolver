@@ -2,5 +2,5 @@ solvers:
   - solver
 problemsFile: build/problems.txt
 queryLimit: 100000
-timeoutSecs: 300
+timeoutSecs: 60
 precision: -3
