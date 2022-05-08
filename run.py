@@ -1,4 +1,5 @@
 import argparse
+import json
 import yaml
 import typing
 import subprocess
@@ -38,6 +39,7 @@ if __name__ == '__main__':
 
     for problem_idx in range(len(problems)):
         problem = problems[problem_idx]
+        problem_data = json.loads(problem)
         print(f"running solvers on problem {problem_idx}/{len(problems)}")
         for s in spec.solvers:
             test_id = f"{s}-{problem_idx}"
@@ -50,6 +52,7 @@ if __name__ == '__main__':
             invoke_args += ['--timeout', str(spec.timeout_secs)]
             invoke_args += ['--raw-log', args.logs_dir + '/' + test_id + '.txt']
             invoke_args += ['--desired-precision', str(10**(spec.precision))]
+            invoke_args += [f"--solver-arg=--max-slope={problem_data['max_slope']}"]
 
             subprocess.check_call(invoke_args)
 
