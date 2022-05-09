@@ -5,15 +5,24 @@ import sys
 import socket
 import math
 
+class InvalidPoint(Exception):
+    pass
+
 class Problem:
-    a: float
-    b: float
-    func: typing.Callable[[float], float]
+    _a: float
+    _b: float
+    _func: typing.Callable[[float], float]
 
     def __init__(self, a: float, b: float, objective: str, **_) -> None:
-        self.a = a
-        self.b = b
-        self.func = lambda x: eval(objective, {'x': x, 'sin': math.sin})
+        self._a = a
+        self._b = b
+        self._func = lambda x: eval(objective, {'x': x, 'sin': math.sin})
+
+    def evaluate(self, x: float) -> float:
+        if x < self._a or x > self._b:
+            raise InvalidPoint(f"point {x} is outside of allowed range [{self._a}, {self._b}]")
+        return self._func(x)
+
 
 class Logger:
     def __init__(self, log_path) -> None:
@@ -53,7 +62,15 @@ if __name__ == '__main__':
         line = sock_r.readline()
         if line.strip() == "STOP":
             point = float(sock_r.readline().strip())
-            result = problem.func(point)
+            try:
+                result = problem.evaluate(point)
+            except InvalidPoint as ex:
+                logger.log({
+                    'type': 'Fail',
+                    'reason': 'InvalidAnswer',
+                    'description': str(ex)
+                })
+                exit(1)
             event = {
                 'point': point,
                 'result': result,
@@ -65,10 +82,19 @@ if __name__ == '__main__':
         if remaining == step:
             logger.log({
                 'type': 'Fail',
-                'reason': 'QueryLimitExceeded'
+                'reason': 'QueryLimitExceeded',
+                'message': f"Limit of {args.query_limit} queries was exhausted"
             })
-            exit(42)
-        value = problem.func(f)
+            exit(1)
+        try: 
+            value = problem.evaluate(f)
+        except InvalidPoint as ex:
+            logger.log({
+                'type': 'Fail',
+                'reason': 'InvalidQuery',
+                'description': str(ex)
+            })
+            exit(1)
         print(value, file=sock_w, flush=True)
         event = {
             'query': f,
