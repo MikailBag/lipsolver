@@ -72,12 +72,16 @@ if __name__ == '__main__':
 
     test_outcome_log = open(args.logs_dir+'/test-summary.txt', 'w')
 
+    max_problem_idx_width = 0
+    for problem_idx in range(len(problems)):
+        max_problem_idx_width = max(max_problem_idx_width, len(str(problem_idx)))
+    
     for problem_idx in range(len(problems)):
         problem = problems[problem_idx]
         problem_data = json.loads(problem)
         print(f"running solvers on problem {problem_idx}/{len(problems)}")
         for s in spec.solvers:
-            test_id = f"{s.name}-{s.label}-{problem_idx}"
+            test_id = f"{s.name}-{s.label}-{'0'*(max_problem_idx_width - len(str(problem_idx)))}{problem_idx}"
             print(f"running solver {s.name}")
             invoke_args = ['python3', 'tools/invoke.py']
             invoke_args += ['--solver', 'solvers/' + s.name + '.py' ]
