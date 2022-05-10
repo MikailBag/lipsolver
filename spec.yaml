@@ -1,6 +1,8 @@
 solvers:
   - name: solver
+    cfgLabel: initial
   - name: direct1d
+    cfgLabel: initial
     extraArgs:
       - --step-counter=40
 problemsFile: build/problems.txt
