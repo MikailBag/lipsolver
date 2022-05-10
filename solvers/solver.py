@@ -197,6 +197,11 @@ def find_min(f, a, b, eps, algo):
         global_phase ^= True
         if x[t] - x[t-1] <= eps:
             break
+        
+        # new idea
+        if t + 1 < len(x) and x[t+1] - x[t] <= eps:
+            break
+
         new_x = (x[t] + x[t-1]) / 2 - (z[t] - z[t-1]) / (2 * l[t])
         x.append(new_x)
         z.append(f(new_x))
