@@ -1,6 +1,92 @@
 solvers:
   - name: solver
-    cfgLabel: initial
+    cfgLabel: Geom-AL
+    extraArgs:
+      - --algorithm=Geom-AL
+  - name: solver
+    cfgLabel: Geom-GL
+    extraArgs:
+      - --algorithm=Geom-GL
+  - name: solver
+    cfgLabel: Geom-LTM
+    extraArgs:
+      - --algorithm=Geom-LTM
+  - name: solver
+    cfgLabel: Geom-LTA
+    extraArgs:
+      - --algorithm=Geom-LTA
+  - name: solver
+    cfgLabel: Geom-LTMA
+    extraArgs:
+      - --algorithm=Geom-LTMA
+  - name: solver
+    cfgLabel: Geom-LTIMP
+    extraArgs:
+      - --algorithm=Geom-LTIMP
+  - name: solver
+    cfgLabel: Geom-LTIAP
+    extraArgs:
+      - --algorithm=Geom-LTIAP
+  - name: solver
+    cfgLabel: Geom-LTIMAP
+    extraArgs:
+      - --algorithm=Geom-LTIMAP
+  - name: solver
+    cfgLabel: Geom-LTIMO
+    extraArgs:
+      - --algorithm=Geom-LTIMO
+  - name: solver
+    cfgLabel: Geom-LTIAO
+    extraArgs:
+      - --algorithm=Geom-LTIAO
+  - name: solver
+    cfgLabel: Geom-LTIMAO
+    extraArgs:
+      - --algorithm=Geom-LTIMAO
+  - name: solver
+    cfgLabel: Inf-AL
+    extraArgs:
+      - --algorithm=Inf-AL
+  - name: solver
+    cfgLabel: Inf-GL
+    extraArgs:
+      - --algorithm=Inf-GL
+  - name: solver
+    cfgLabel: Inf-LTM
+    extraArgs:
+      - --algorithm=Inf-LTM
+  - name: solver
+    cfgLabel: Inf-LTA
+    extraArgs:
+      - --algorithm=Inf-LTA
+  - name: solver
+    cfgLabel: Inf-LTMA
+    extraArgs:
+      - --algorithm=Inf-LTMA
+  - name: solver
+    cfgLabel: Inf-LTIMP
+    extraArgs:
+      - --algorithm=Inf-LTIMP
+  - name: solver
+    cfgLabel: Inf-LTIAP
+    extraArgs:
+      - --algorithm=Inf-LTIAP
+  - name: solver
+    cfgLabel: Inf-LTIMAP
+    extraArgs:
+      - --algorithm=Inf-LTIMAP
+  - name: solver
+    cfgLabel: Inf-LTIMO
+    extraArgs:
+      - --algorithm=Inf-LTIMO
+  - name: solver
+    cfgLabel: Inf-LTIAO
+    extraArgs:
+      - --algorithm=Inf-LTIAO
+  - name: solver
+    cfgLabel: Inf-LTIMAO
+    extraArgs:
+      - --algorithm=Inf-LTIMAO
   - name: direct1d
     cfgLabel: initial
     extraArgs:
