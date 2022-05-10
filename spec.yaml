@@ -111,5 +111,5 @@ problemsFile: build/problems.txt
 queryLimit: 100000
 timeoutSecs: 60
 precision:
-  exponent: -3
-  kind: None
+  exponent: -5
+  kind: Area
