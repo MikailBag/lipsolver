@@ -19,7 +19,7 @@ def find_local_tuning_info(r, x, z):
     H = [0] * len(x)
     H_k = 0
     for i in range(1, len(x)):
-        H[i] = abs(z[i] - z[i-1]) / (x[i] - x[i-1])
+        H[i] = abs(z[i] - z[i-1]) / max(x[i] - x[i-1], 1e-8)
         H_k = max(H_k, H[i])
     lamb = [0] * len(x)
     for i in range(1, len(x)):
