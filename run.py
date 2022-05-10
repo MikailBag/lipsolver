@@ -7,10 +7,12 @@ import subprocess
 
 class SolverSpec:
     name: str
+    label: str
     extra_args: str
 
     def __init__(self, obj) -> None:
         self.name = obj['name']
+        self.label = obj['cfgLabel']
         self.extra_args = obj.get('extraArgs', [])
 
 
@@ -75,7 +77,7 @@ if __name__ == '__main__':
         problem_data = json.loads(problem)
         print(f"running solvers on problem {problem_idx}/{len(problems)}")
         for s in spec.solvers:
-            test_id = f"{s.name}-{problem_idx}"
+            test_id = f"{s.name}-{s.label}-{problem_idx}"
             print(f"running solver {s.name}")
             invoke_args = ['python3', 'tools/invoke.py']
             invoke_args += ['--solver', 'solvers/' + s.name + '.py' ]
@@ -97,6 +99,7 @@ if __name__ == '__main__':
 
             outcome = get_outcome(oracle_log)
             outcome['solverName'] = s.name
+            outcome['solverLabel'] = s.label
             outcome['problemId'] = problem_idx
             if outcome['type'] == 'Answer':
                 solver_res = outcome['result']
