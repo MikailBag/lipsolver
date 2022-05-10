@@ -3,6 +3,7 @@ import json
 import yaml
 import typing
 import subprocess
+import enum
 
 
 class SolverSpec:
@@ -15,20 +16,38 @@ class SolverSpec:
         self.label = obj['cfgLabel']
         self.extra_args = obj.get('extraArgs', [])
 
+class PrecisionKind(enum.Enum):
+    NONE = 'None'
+    AREA = 'Area'
+
+
+class PrecisionSpec:
+    exponent: float
+    kind: PrecisionKind
+
+    def __init__(self, obj) -> None:
+        self.exponent = obj['exponent']
+        self.kind = PrecisionKind(obj['kind'])
+
+    def get_precision_for(self, problem) -> float:
+        value = 10**self.exponent
+        if self.kind == PrecisionKind.AREA:
+            value *= problem['b'] - problem['a']
+        return value
 
 class Spec:
     solvers: typing.List[SolverSpec]
     problems_file: str
     query_limit: int
     timeout_secs: int
-    precision: float
+    precision: PrecisionSpec
 
     def __init__(self, obj) -> None:
         self.solvers = list(map(SolverSpec, obj['solvers']))
         self.problems_file = obj['problemsFile']
         self.query_limit = obj['queryLimit']
         self.timeout_secs = obj['timeoutSecs']
-        self.precision = obj['precision']
+        self.precision = PrecisionSpec(obj['precision'])
 
 def load_problems(spec: Spec) -> typing.List[str]:
     lines = open(spec.problems_file).readlines()
@@ -94,7 +113,9 @@ if __name__ == '__main__':
             oracle_log = args.logs_dir + '/' + test_id + '-oracle.txt'
             invoke_args += ['--raw-log', oracle_log]
 
-            invoke_args += ['--desired-precision', str(10**(spec.precision))]
+            precision = spec.precision.get_precision_for(problem_data)
+
+            invoke_args += ['--desired-precision', str(precision)]
             invoke_args += [f"--solver-arg=--max-slope={problem_data['max_slope']}"]
             for arg in s.extra_args:
                 invoke_args.append(f"--solver-arg={arg}")
@@ -108,7 +129,7 @@ if __name__ == '__main__':
             if outcome['type'] == 'Answer':
                 solver_res = outcome['result']
                 optimal_res = problem_data['min_f']
-                solved = (solver_res <= optimal_res + (10**spec.precision))
+                solved = (solver_res <= optimal_res + precision)
                 outcome['bestResult'] = optimal_res
                 outcome['solved'] = solved
             json.dump(outcome, test_outcome_log)
