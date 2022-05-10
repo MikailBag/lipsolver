@@ -19,7 +19,7 @@ def find_local_tuning_info(r, x, z):
     H = [0] * len(x)
     H_k = 0
     for i in range(1, len(x)):
-        H[i] = abs(z[i] - z[i-1]) / (x[i] - x[i-1])
+        H[i] = abs(z[i] - z[i-1]) / max(x[i] - x[i-1], 1e-8)
         H_k = max(H_k, H[i])
     lamb = [0] * len(x)
     for i in range(1, len(x)):
@@ -103,7 +103,7 @@ class InformationMethod(CharacteristicCalculator):
         R = [0] * len(x)
         for i in range(1, len(x)):
             R[i] = 2 * (z[i] + z[i-1]) - l[i] * (x[i] - x[i-1]) 
-            R[i] -= (z[i] - z[i-1])**2 / (l[i] * (x[i] - x[i-1]))
+            R[i] -= (z[i] - z[i-1])**2 / (l[i] * max(x[i] - x[i-1], 1e-8))
         return R
 
 
@@ -191,6 +191,16 @@ def find_min(f, a, b, eps, algo):
         for i in range(len(z)):
             if z[i] < z[i_min]:
                 i_min = i
+
+        # new idea
+
+        cnt_min = 0
+        for i in range(len(x)):
+            if x[i] - x[i_min] <= eps:
+                cnt_min += 1
+        if cnt_min >= 10:
+            break
+
         l = algo.estimator.get(x, z)
         R = algo.calculator.get(x, z, l)
         t = algo.selector.get(global_phase, x, z, R, i_min, last_pick_was_optimal)
@@ -198,6 +208,10 @@ def find_min(f, a, b, eps, algo):
         if x[t] - x[t-1] <= eps:
             break
         new_x = (x[t] + x[t-1]) / 2 - (z[t] - z[t-1]) / (2 * l[t])
+        if new_x < a:
+            new_x = a
+        if new_x > b:
+            new_x = b
         x.append(new_x)
         z.append(f(new_x))
         if z[-1] <= z[i_min]:
