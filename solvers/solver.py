@@ -208,6 +208,10 @@ def find_min(f, a, b, eps, algo):
         if x[t] - x[t-1] <= eps:
             break
         new_x = (x[t] + x[t-1]) / 2 - (z[t] - z[t-1]) / (2 * l[t])
+        if new_x < a:
+            new_x = a
+        if new_x > b:
+            new_x = b
         x.append(new_x)
         z.append(f(new_x))
         if z[-1] <= z[i_min]:
