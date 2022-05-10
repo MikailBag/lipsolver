@@ -1,4 +1,5 @@
 import argparse
+from cmath import inf
 import math
 import time
 import sys
@@ -87,8 +88,26 @@ def get_points(segments):
     return list(map(seg_to_point, segments))
 
 
-def get_pot_opt_points(segments):
+def calc_ang(p, q):
+    if q.x == p.x:
+        return inf
+    return abs(q.y - p.y) / abs(q.x - p.x)
+
+
+def get_pot_opt_points(segments, bound):
     points = lower_convex_hull(get_points(segments))
+    n = len(points)
+    if n > 1:
+        res = []
+        for i in range(n):
+            k = 0
+            if i == n - 1:
+                k = calc_ang(points[i - 1], points[i])
+            else:
+                k = calc_ang(points[i], points[i + 1])
+            if points[i].y - k * points[i].x <= bound:
+                res.append(points[i])
+        points = res
     return list(map(lambda point: point.id, points))
 
 
@@ -101,12 +120,12 @@ class Rec:
         return (self.val, self.arg) < (other.val, other.arg)
 
 
-def direct(func, lowb, upb, step_limit):
+def direct(func, lowb, upb, step_limit, eps = 0.039):
     segments = []
     record = Rec((lowb + upb) / 2, func((lowb + upb) / 2))
     segments.append(Segment(lowb, upb, 0, record.val, len(segments)))
     for _ in range(step_limit):
-        good_points = get_pot_opt_points(segments)
+        good_points = get_pot_opt_points(segments, record.val - eps * abs(record.val))
         for i in good_points:
             s = segments[i]
             delta = (s.right - s.left) / 3
@@ -120,30 +139,42 @@ def direct(func, lowb, upb, step_limit):
             segments[i].left += delta
             segments[i].right -= delta
             segments[i].phase += 1
+    print('Function evaluations used:', func.counter, file=sys.stderr, flush=True)
     return record
 
 
 def ask_query(x):
+    ask_query.counter += 1
     print("%.10f" % x, flush=True)
     return float(input())
 
 
 # arg = 5.19977837 :: res = -1.60130755
-# --area-begin 2.7 --area-end 7.5 --step-counter 100
+# --area-begin 2.7 --area-end 7.5 --step-counter 100 --max-slope 1
 def f1(x):
+    f1.counter += 1
     return math.sin(x) + math.sin(10 * x / 3) + math.log(x) - 84 * x / 100 + 3
 
 
 # arg = 17.03919896 :: res = -1.90596112
-# --area-begin 3.1 --area-end 20.4 --step-counter 100
+# --area-begin 3.1 --area-end 20.4 --step-counter 100 --max-slope 1
 def f2(x):
+    f2.counter += 1
     return math.sin(x) + math.sin(2 * x / 3)
 
 
 # arg = -0.67957866 :: res = -0.82423940
-# --area-begin -10 --area-end 10 --step-counter 100
+# --area-begin -10 --area-end 10 --step-counter 100 --max-slope 1
 def f4(x):
+    f4.counter += 1
     return (x + math.sin(x)) * math.exp(-x * x)
+
+
+def init():
+    ask_query.counter = 0
+    f1.counter = 0
+    f2.counter = 0
+    f4.counter = 0
 
 
 if __name__ == '__main__':
@@ -155,9 +186,12 @@ if __name__ == '__main__':
     parser.add_argument('--max-slope', type=float, required=True)
     args = parser.parse_args()
     
+    init()
+
     start_time = time.time()
     result = direct(ask_query, args.area_begin, args.area_end, args.step_counter)
     end_time = time.time()
 
-    print('STOP\n', "%.10f" % result.arg, sep='', flush=True)
-    print("Time elapsed: %.5f" % (end_time - start_time), "s.", sep='', file=sys.stderr)
+    print('STOP\n', '%.10f' % result.arg, sep='', flush=True)
+    print('Time elapsed: %.5f' % (end_time - start_time), 's.', sep='', file=sys.stderr, flush=True)
+    print('Final result of algorithm: %.6f' % result.val, sep='', flush=True)
