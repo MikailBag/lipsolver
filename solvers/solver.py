@@ -103,7 +103,7 @@ class InformationMethod(CharacteristicCalculator):
         R = [0] * len(x)
         for i in range(1, len(x)):
             R[i] = 2 * (z[i] + z[i-1]) - l[i] * (x[i] - x[i-1]) 
-            R[i] -= (z[i] - z[i-1])**2 / (l[i] * (x[i] - x[i-1]))
+            R[i] -= (z[i] - z[i-1])**2 / (l[i] * max(x[i] - x[i-1], 1e-8))
         return R
 
 
