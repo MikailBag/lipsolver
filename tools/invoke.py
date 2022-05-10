@@ -41,12 +41,16 @@ if __name__ == '__main__':
 
     solver_sock.close()
     oracle_sock.close()
-
-    oracle.wait(args.timeout)
-    solver.wait(args.timeout)
+    try:
+        oracle.wait(args.timeout)
+    except:
+        solver.kill()
+    solver.wait(timeout=1)
+    # give oracle opportunity to exit normally
+    oracle.wait(timeout=1)
+        
     if oracle.returncode != 0:
         print("oracle failed", file=sys.stderr)
         exit(1)
     if solver.returncode != 0:
         print("solver failed", file=sys.stderr)
-        exit(1)

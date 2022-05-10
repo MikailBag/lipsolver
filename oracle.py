@@ -70,7 +70,7 @@ if __name__ == '__main__':
                     'reason': 'InvalidAnswer',
                     'description': str(ex)
                 })
-                exit(1)
+                exit(0)
             event = {
                 'point': point,
                 'result': result,
@@ -78,14 +78,22 @@ if __name__ == '__main__':
             }
             logger.log(event)
             break
-        f = float(line.strip())
+        try:
+            f = float(line.strip())
+        except:
+            logger.log({
+                'type': 'Fail',
+                'reason': 'InvalidOutput',
+                'message': f"Received invalid query {line} (likely caused by TL exceeded)"
+            })
+            exit(0)
         if remaining == step:
             logger.log({
                 'type': 'Fail',
                 'reason': 'QueryLimitExceeded',
                 'message': f"Limit of {args.query_limit} queries was exhausted"
             })
-            exit(1)
+            exit(0)
         try: 
             value = problem.evaluate(f)
         except InvalidPoint as ex:
@@ -94,7 +102,7 @@ if __name__ == '__main__':
                 'reason': 'InvalidQuery',
                 'description': str(ex)
             })
-            exit(1)
+            exit(0)
         print(value, file=sock_w, flush=True)
         event = {
             'query': f,
