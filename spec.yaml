@@ -88,9 +88,25 @@ solvers:
     extraArgs:
       - --algorithm=Inf-LTIMAO
   - name: direct1d
-    cfgLabel: initial
+    cfgLabel: steps-14::eps=1e-4
     extraArgs:
-      - --step-counter=40
+      - --step-counter=14
+      - --epsilon=0.0001
+  - name: direct1d
+    cfgLabel: steps-13::eps=1e-4
+    extraArgs:
+      - --step-counter=12
+      - --epsilon=0.0001
+  - name: direct1d
+    cfgLabel: steps-12::eps=1e-4
+    extraArgs:
+      - --step-counter=12
+      - --epsilon=0.0001
+  - name: direct1d
+    cfgLabel: steps-12::eps=1e-3
+    extraArgs:
+      - --step-counter=12
+      - --epsilon=0.001
 problemsFile: build/problems.txt
 queryLimit: 100000
 timeoutSecs: 60
