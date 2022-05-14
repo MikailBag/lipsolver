@@ -180,6 +180,10 @@ class Algorithm:
         
 
 def find_min(f, a, b, eps, algo):
+    if a != int(a):
+        a += eps
+    if b != int(b):
+        b -= eps
     x = [a, b]
     z = [f(a), f(b)]
     global_phase = True
@@ -205,7 +209,7 @@ def find_min(f, a, b, eps, algo):
             new_x = b - eps
         x.append(new_x)
         z.append(f(new_x))
-        if not z[-1]:
+        if z[-1] == None:
             break
         if z[-1] <= z[i_min]:
             last_pick_was_optimal = True
