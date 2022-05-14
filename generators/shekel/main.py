@@ -51,7 +51,7 @@ class ShekelGen:
             # function (modulo details): 1/(k * x^2 + c)
             # derivative (2kx)/(kx^2+c)^2
             # Wolfram says global maxima fo derivative is \frac{3\sqrt{3}}{8}\sqrt{\frac{k}{c^3}}
-            max_slope += 3 * math.sqrt(3) / 8.0 * k / (c ** 1.5)
+            max_slope += 3 * math.sqrt(3) / 8.0 * 10.0 * k / (c ** 1.5)
             formula += term if i == 0 else " + " + term
 
         sym_objective = sym.sympify(formula)
