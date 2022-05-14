@@ -181,7 +181,7 @@ class Algorithm:
 
 def find_min(f, a, b, eps, algo):
     if a < 0:
-        a += 1e-10
+        a += eps
     x = [a, b]
     z = [f(a), f(b)]
     global_phase = True
