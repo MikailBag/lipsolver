@@ -36,7 +36,7 @@ def find_local_tuning_info(r, x, z):
 
 
 class GlobalEstimate(LipschitzConstantEstimator):
-    def __init__(self, r=1000, xi=1e-8):
+    def __init__(self, r=10, xi=1e-8):
         self.r = r
         self.xi = xi
 
@@ -47,7 +47,7 @@ class GlobalEstimate(LipschitzConstantEstimator):
 
 
 class MaximumLocalTuning(LipschitzConstantEstimator):
-    def __init__(self, r=1000, xi=1e-8):
+    def __init__(self, r=10, xi=1e-8):
         self.r = r
         self.xi = xi
 
@@ -60,7 +60,7 @@ class MaximumLocalTuning(LipschitzConstantEstimator):
     
 
 class AdditiveLocalTuning(LipschitzConstantEstimator):
-    def __init__(self, r=1000, xi=1e-8):
+    def __init__(self, r=10, xi=1e-8):
         self.r = r
         self.xi = xi
 
@@ -73,7 +73,7 @@ class AdditiveLocalTuning(LipschitzConstantEstimator):
 
 
 class MaximumAdditiveLocalTuning(LipschitzConstantEstimator):
-    def __init__(self, r=1000, xi=1e-8):
+    def __init__(self, r=10, xi=1e-8):
         self.r = r
         self.xi = xi
 
@@ -204,14 +204,14 @@ def find_min(f, a, b, eps, algo):
             new_x = b - eps
         
         # new idea
-
+        """
         cnt = 0
         for i in range(len(x)):
             if x[i] - new_x <= eps:
                 cnt += 1
         if cnt >= 10:
             break
-
+        """
         x.append(new_x)
         z.append(f(new_x))
         if z[-1] <= z[i_min]:
@@ -222,6 +222,8 @@ def find_min(f, a, b, eps, algo):
 
 
 def eval_at(x):
+    #return -1/(3.9780059916004804 * (10. * x - 1.6649929909253236)**2 + 0.1828660559365029) + -1/(5.411447363092992 * (10. * x - 2.285771292848484)**2 + 0.19045310811228205) + -1/(1.5509459490118427 * (10. * x - 4.351900476783807)**2 + 0.2133907015534809) + -1/(6.837307598441257 * (10. * x - 1.3211760765629055)**2 + 0.15969534790691786) + -1/(8.09488104211493 * (10. * x - 0.14614859392490298)**2 + 0.15598192319264903) + -1/(1.720616784301353 * (10. * x - 6.845816224995192)**2 + 0.28814985449898023) + -1/(2.0666392669257765 * (10. * x - 8.40964462436705)**2 + 0.22578064439908463) + -1/(1.021664022653415 * (10. * x - 0.5568973164655067)**2 + 0.12329325847923694) + -1/(2.4895318572292244 * (10. * x - 6.822806782090089)**2 + 0.20157771231795837) + -1/(7.888471758225953 * (10. * x - 5.864422048183654)**2 + 0.10677826382200935)
+
     print("%.10f" % x, flush=True)
     return float(input())
 
