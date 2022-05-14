@@ -47,7 +47,7 @@ class GlobalEstimate(LipschitzConstantEstimator):
 
 
 class MaximumLocalTuning(LipschitzConstantEstimator):
-    def __init__(self, r=9, xi=1e-8):
+    def __init__(self, r=10, xi=1e-8):
         self.r = r
         self.xi = xi
 
@@ -60,7 +60,7 @@ class MaximumLocalTuning(LipschitzConstantEstimator):
     
 
 class AdditiveLocalTuning(LipschitzConstantEstimator):
-    def __init__(self, r=9, xi=1e-8):
+    def __init__(self, r=10, xi=1e-8):
 
         self.r = r
         self.xi = xi
@@ -74,7 +74,7 @@ class AdditiveLocalTuning(LipschitzConstantEstimator):
 
 
 class MaximumAdditiveLocalTuning(LipschitzConstantEstimator):
-    def __init__(self, r=9, xi=1e-8):
+    def __init__(self, r=10, xi=1e-8):
         self.r = r
         self.xi = xi
 
