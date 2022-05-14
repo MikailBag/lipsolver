@@ -180,8 +180,10 @@ class Algorithm:
         
 
 def find_min(f, a, b, eps, algo):
-    if a < 0:
+    if a != int(a):
         a += eps
+    if b != int(b):
+        b -= eps
     x = [a, b]
     z = [f(a), f(b)]
     global_phase = True
