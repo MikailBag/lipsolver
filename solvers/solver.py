@@ -36,7 +36,7 @@ def find_local_tuning_info(r, x, z):
 
 
 class GlobalEstimate(LipschitzConstantEstimator):
-    def __init__(self, r=1.1, xi=1e-8):
+    def __init__(self, r=10, xi=1e-8):
         self.r = r
         self.xi = xi
 
@@ -47,7 +47,7 @@ class GlobalEstimate(LipschitzConstantEstimator):
 
 
 class MaximumLocalTuning(LipschitzConstantEstimator):
-    def __init__(self, r=1.1, xi=1e-8):
+    def __init__(self, r=10, xi=1e-8):
         self.r = r
         self.xi = xi
 
@@ -60,7 +60,7 @@ class MaximumLocalTuning(LipschitzConstantEstimator):
     
 
 class AdditiveLocalTuning(LipschitzConstantEstimator):
-    def __init__(self, r=1.8, xi=1e-8):
+    def __init__(self, r=10, xi=1e-8):
         self.r = r
         self.xi = xi
 
@@ -73,7 +73,7 @@ class AdditiveLocalTuning(LipschitzConstantEstimator):
 
 
 class MaximumAdditiveLocalTuning(LipschitzConstantEstimator):
-    def __init__(self, r=1.1, xi=1e-8):
+    def __init__(self, r=10, xi=1e-8):
         self.r = r
         self.xi = xi
 
@@ -191,16 +191,6 @@ def find_min(f, a, b, eps, algo):
         for i in range(len(z)):
             if z[i] < z[i_min]:
                 i_min = i
-
-        # new idea
-
-        cnt_min = 0
-        for i in range(len(x)):
-            if x[i] - x[i_min] <= eps:
-                cnt_min += 1
-        if cnt_min >= 10:
-            break
-
         l = algo.estimator.get(x, z)
         R = algo.calculator.get(x, z, l)
         t = algo.selector.get(global_phase, x, z, R, i_min, last_pick_was_optimal)
@@ -209,9 +199,19 @@ def find_min(f, a, b, eps, algo):
             break
         new_x = (x[t] + x[t-1]) / 2 - (z[t] - z[t-1]) / (2 * l[t])
         if new_x < a:
-            new_x = a
+            new_x = a + eps
         if new_x > b:
-            new_x = b
+            new_x = b - eps
+        
+        # new idea
+
+        cnt = 0
+        for i in range(len(x)):
+            if x[i] - new_x <= eps:
+                cnt += 1
+        if cnt >= 10:
+            break
+
         x.append(new_x)
         z.append(f(new_x))
         if z[-1] <= z[i_min]:
