@@ -36,7 +36,7 @@ def find_local_tuning_info(r, x, z):
 
 
 class GlobalEstimate(LipschitzConstantEstimator):
-    def __init__(self, r=1.1, xi=1e-8):
+    def __init__(self, r=2, xi=1e-8):
         self.r = r
         self.xi = xi
 
