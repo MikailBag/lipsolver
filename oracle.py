@@ -68,7 +68,7 @@ if __name__ == '__main__':
                 logger.log({
                     'type': 'Fail',
                     'reason': 'InvalidAnswer',
-                    'description': str(ex)
+                    'message': str(ex)
                 })
                 exit(0)
             event = {
@@ -100,7 +100,7 @@ if __name__ == '__main__':
             logger.log({
                 'type': 'Fail',
                 'reason': 'InvalidQuery',
-                'description': str(ex)
+                'message': str(ex)
             })
             exit(0)
         print(value, file=sock_w, flush=True)
