@@ -36,7 +36,7 @@ def find_local_tuning_info(r, x, z):
 
 
 class GlobalEstimate(LipschitzConstantEstimator):
-    def __init__(self, r=1.1, xi=1e-8):
+    def __init__(self, r=1000, xi=1e-8):
         self.r = r
         self.xi = xi
 
@@ -47,7 +47,7 @@ class GlobalEstimate(LipschitzConstantEstimator):
 
 
 class MaximumLocalTuning(LipschitzConstantEstimator):
-    def __init__(self, r=1.1, xi=1e-8):
+    def __init__(self, r=1000, xi=1e-8):
         self.r = r
         self.xi = xi
 
@@ -60,7 +60,7 @@ class MaximumLocalTuning(LipschitzConstantEstimator):
     
 
 class AdditiveLocalTuning(LipschitzConstantEstimator):
-    def __init__(self, r=1.1, xi=1e-8):
+    def __init__(self, r=1000, xi=1e-8):
         self.r = r
         self.xi = xi
 
@@ -73,7 +73,7 @@ class AdditiveLocalTuning(LipschitzConstantEstimator):
 
 
 class MaximumAdditiveLocalTuning(LipschitzConstantEstimator):
-    def __init__(self, r=1.1, xi=1e-8):
+    def __init__(self, r=1000, xi=1e-8):
         self.r = r
         self.xi = xi
 
