@@ -1,12 +1,15 @@
 seed: 204042
 generate:
-  - name: shekel
+  - id: shek
+    name: shekel
     count: 10
     params:
       kind: normal
-  - name: shekel
+  - id: rev_shek
+    name: shekel
     count: 10
     params:
       kind: reverse
-  - name: sin_sum
+  - id: sin_sum
+    name: sin_sum
     count: 10

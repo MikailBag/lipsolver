@@ -101,7 +101,7 @@ if __name__ == '__main__':
         print(f"running solvers on problem {problem_idx}/{len(problems)}")
         for s in spec.solvers:
             test_id = f"{s.name}-{s.label}-{'0'*(max_problem_idx_width - len(str(problem_idx)))}{problem_idx}"
-            print(f"running solver {s.name}")
+            print(f"running solver {s.name}, configuration {s.label}")
             invoke_args = ['python3', 'tools/invoke.py']
             invoke_args += ['--solver', 'solvers/' + s.name + '.py' ]
             invoke_args += ['--oracle', './oracle.py']
@@ -126,6 +126,8 @@ if __name__ == '__main__':
             outcome['solverName'] = s.name
             outcome['solverLabel'] = s.label
             outcome['problemId'] = problem_idx
+            outcome['problemIndex'] = problem_data['index']
+            outcome['suiteName'] = problem_data['suite']
             if outcome['type'] == 'Answer':
                 solver_res = outcome['result']
                 optimal_res = problem_data['min_f']
