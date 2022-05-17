@@ -251,7 +251,7 @@ def solve(func, area_begin, area_end, step_counter, eps, improvement):
 
 def local_testing():
     eps = 1e-9
-    steps = 13
+    steps = 12
     improvement = 2
     print('First function:', flush=True)
     solve(f1, 2.7, 7.5, steps, eps, improvement)
@@ -275,7 +275,7 @@ if __name__ == '__main__':
     parser.add_argument('--area-end', type=float, required=True)
     parser.add_argument('--precision', type=float, required=False)
     parser.add_argument('--step-counter', type=int, required=True)
-    parser.add_argument('--max-slope', type=float, required=False)
+    parser.add_argument('--max-slope', type=float, required=True)
     parser.add_argument('--epsilon', type=float, required=True)
     parser.add_argument('--improvement', type=int, required=True)
     args = parser.parse_args()
