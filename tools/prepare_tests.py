@@ -1,5 +1,6 @@
 from __future__ import generator_stop
 import sys
+import json
 import yaml
 import random
 import subprocess
@@ -12,7 +13,7 @@ class Generator:
         self.env = spec['runCommand'].get('env', dict())
         self.parameters = spec['parameters']
 
-    def invoke(self, arguments, seed):
+    def invoke(self, arguments, seed, suite_id, index_in_suite):
         cwd = f"./generators/{self.name}"
         env = dict(**self.env)
         for param in self.parameters:
@@ -22,7 +23,14 @@ class Generator:
                 val = arguments[param['name']]
             env[param['var']] = val
 
-        subprocess.run(self.argv, env=env, cwd=cwd, check=True)
+        child = subprocess.Popen(self.argv, env=env, cwd=cwd, stdout=subprocess.PIPE)
+        line = child.stdout.readline()
+        val = json.loads(line)
+        val['suite'] = suite_id
+        val['index'] = index_in_suite
+        json.dump(val, sys.stdout)
+        ret = child.wait()
+        assert ret == 0
 
 
 def load_generators():
@@ -55,7 +63,7 @@ def main():
         else:
             raise Exception("unknown generator requested")
         for i in range(req['count']):
-            gen.invoke(req.get('params', dict()), suite_rng.randint(0, 2**30))
+            gen.invoke(req.get('params', dict()), suite_rng.randint(0, 2**30), req['id'], i)
             print(flush=True)
 
 
