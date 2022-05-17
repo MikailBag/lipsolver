@@ -277,11 +277,11 @@ if __name__ == '__main__':
     parser.add_argument('--step-counter', type=int, required=True)
     parser.add_argument('--max-slope', type=float, required=True)
     parser.add_argument('--epsilon', type=float, required=True)
-    # parser.add_argument('--improvement', type=int, required=True)
+    parser.add_argument('--improvement', type=int, required=True)
     args = parser.parse_args()
 
     init()
 
     # local_testing()
 
-    solve(ask_query, args.area_begin, args.area_end, args.step_counter, args.epsilon, 2)
+    solve(ask_query, args.area_begin, args.area_end, args.step_counter, args.epsilon, args.improvement)
