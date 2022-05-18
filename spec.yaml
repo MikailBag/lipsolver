@@ -93,6 +93,12 @@ solvers:
       - --step-counter=16
       - --epsilon=0.0001
       - --improvement=2
+    - name: direct1d
+    cfgLabel: steps-16::eps=1e-4::imp=1
+    extraArgs:
+      - --step-counter=16
+      - --epsilon=0.0001
+      - --improvement=1
   - name: direct1d
     cfgLabel: steps-16::eps=1e-4::imp=0
     extraArgs:
@@ -106,6 +112,12 @@ solvers:
       - --epsilon=0.00001
       - --improvement=2
   - name: direct1d
+    cfgLabel: steps-15::eps=1e-5::imp=1
+    extraArgs:
+      - --step-counter=15
+      - --epsilon=0.00001
+      - --improvement=1
+  - name: direct1d
     cfgLabel: steps-15::eps=1e-5::imp=0
     extraArgs:
       - --step-counter=15
@@ -117,24 +129,6 @@ solvers:
       - --step-counter=14
       - --epsilon=0.00001
       - --improvement=2
-  - name: direct1d
-    cfgLabel: steps-14::eps=1e-5::imp=0
-    extraArgs:
-      - --step-counter=14
-      - --epsilon=0.00001
-      - --improvement=0
-  - name: direct1d
-    cfgLabel: steps-14::eps=1e-6::imp=2
-    extraArgs:
-      - --step-counter=14
-      - --epsilon=0.000001
-      - --improvement=2
-  - name: direct1d
-    cfgLabel: steps-14::eps=1e-6::imp=0
-    extraArgs:
-      - --step-counter=14
-      - --epsilon=0.000001
-      - --improvement=0
 problemsFile: build/problems.txt
 queryLimit: 100000
 timeoutSecs: 60
