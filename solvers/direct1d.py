@@ -249,7 +249,7 @@ def solve(func, area_begin, area_end, step_counter, eps, improvement):
     print('Final result of algorithm: %.12f' % result.val, sep='', flush=True)
 
 
-def local_testing():
+def debug_testing():
     eps = 1e-9
     steps = 12
     improvement = 2
@@ -282,6 +282,6 @@ if __name__ == '__main__':
 
     init()
 
-    # local_testing()
+    # debug_testing()
 
     solve(ask_query, args.area_begin, args.area_end, args.step_counter, args.epsilon, args.improvement)
