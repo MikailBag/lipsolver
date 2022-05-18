@@ -3,6 +3,52 @@ from cmath import inf
 import math
 import time
 import sys
+import heapq
+
+
+class Median:
+    def __init__(self):
+        self.left = []
+        self.right = []
+        self.med = None
+
+    def push_left(self, x):
+        heapq.heappush(self.left, -x)
+
+    def push_right(self, x):
+        heapq.heappush(self.right, x)
+
+    def pop_left(self):
+        return -heapq.heappop(self.left)
+
+    def pop_right(self):
+        return heapq.heappop(self.right)
+
+    def fix(self):
+        while len(self.left) + 1 < len(self.right):
+            self.push_left(self.med)
+            self.med = self.pop_right()
+        while len(self.left) > len(self.right):
+            self.push_right(self.med)
+            self.med = self.pop_left()
+
+    def add(self, x):
+        if self.med is None:
+            self.med = x
+        elif x < self.med:
+            self.push_left(x)
+        elif x > self.med:
+            self.push_right(x)
+        else:
+            if len(self.left) == len(self.right):
+                self.push_right(x)
+            else:
+                self.push_left(x)
+        self.fix()
+
+    def get(self):
+        return self.med
+
 
 class Segment:
     def __init__(self, left, right, phase, value, id):
@@ -120,12 +166,23 @@ class Rec:
         return (self.val, self.arg) < (other.val, other.arg)
 
 
-def direct(func, lowb, upb, step_limit, eps):
+def direct(func, lowb, upb, step_limit, eps, improvement):
+    median = Median()
     segments = []
     record = Rec((lowb + upb) / 2, func((lowb + upb) / 2))
     segments.append(Segment(lowb, upb, 0, record.val, len(segments)))
+    median.add(record.val)
     for _ in range(step_limit):
-        good_points = get_pot_opt_points(segments, record.val - eps * abs(record.val))
+        delta = 0
+        if improvement == 0:
+            delta = abs(record.val)
+        elif improvement == 1:
+            delta = median.get() - record.val
+        else:
+            delta = max(abs(record.val), median.get() - record.val)
+        
+        good_points = get_pot_opt_points(segments, record.val - eps * delta)
+        
         if len(good_points) == 0:
             print('Steps used:', _, file=sys.stderr, flush=True)
             break
@@ -136,6 +193,8 @@ def direct(func, lowb, upb, step_limit, eps):
             c_right = s.right - delta / 2
             res_left = func(c_left)
             res_right = func(c_right)
+            median.add(res_left)
+            median.add(res_right)
             record = min(record, min(Rec(c_left, res_left), Rec(c_right, res_right)))
             segments.append(Segment(s.left, s.left + delta, s.phase + 1, res_left, len(segments)))
             segments.append(Segment(s.right - delta, s.right, s.phase + 1, res_right, len(segments)))
@@ -180,9 +239,9 @@ def init():
     f3.counter = 0
 
 
-def solve(func, area_begin, area_end, step_counter, eps):
+def solve(func, area_begin, area_end, step_counter, eps, improvement):
     start_time = time.time()
-    result = direct(func, area_begin, area_end, step_counter, eps)
+    result = direct(func, area_begin, area_end, step_counter, eps, improvement)
     end_time = time.time()
 
     print('STOP\n', '%.12f' % result.arg, sep='', flush=True)
@@ -191,20 +250,21 @@ def solve(func, area_begin, area_end, step_counter, eps):
 
 
 def local_testing():
-    eps = 0.001
+    eps = 1e-9
     steps = 12
+    improvement = 2
     print('First function:', flush=True)
-    solve(f1, 2.7, 7.5, steps, eps)
+    solve(f1, 2.7, 7.5, steps, eps, improvement)
     print('Actual result: arg = 5.19977837 :: res = -1.60130755', flush=True)
     print()
 
     print('Second function:', flush=True)
-    solve(f2, 3.1, 20.4, steps, eps)
+    solve(f2, 3.1, 20.4, steps, eps, improvement)
     print('Actual result: arg = 17.03919896 :: res = -1.90596112', flush=True)
     print()
 
     print('Third function:', flush=True)
-    solve(f3, -10, 10, steps, eps)
+    solve(f3, -10, 10, steps, eps, improvement)
     print('Actual result: arg = -0.67957866 :: res = -0.82423940', flush=True)
     print()
 
@@ -217,10 +277,11 @@ if __name__ == '__main__':
     parser.add_argument('--step-counter', type=int, required=True)
     parser.add_argument('--max-slope', type=float, required=True)
     parser.add_argument('--epsilon', type=float, required=True)
+    parser.add_argument('--improvement', type=int, required=True)
     args = parser.parse_args()
 
     init()
 
     # local_testing()
 
-    solve(ask_query, args.area_begin, args.area_end, args.step_counter, args.epsilon)
+    solve(ask_query, args.area_begin, args.area_end, args.step_counter, args.epsilon, args.improvement)

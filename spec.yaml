@@ -88,50 +88,29 @@ solvers:
     extraArgs:
       - --algorithm=Inf-LTIMAO
   - name: direct1d
-    cfgLabel: steps-18::eps=1e-4
-    extraArgs:
-      - --step-counter=18
-      - --epsilon=0.0001
-  - name: direct1d
-    cfgLabel: steps-18::eps=1e-6
-    extraArgs:
-      - --step-counter=18
-      - --epsilon=0.000001
-  - name: direct1d
-    cfgLabel: steps-18::eps=1e-9
-    extraArgs:
-      - --step-counter=18
-      - --epsilon=0.000000001
-  - name: direct1d
-    cfgLabel: steps-16::eps=1e-4
+    cfgLabel: steps-16::eps=1e-4::imp=2
     extraArgs:
       - --step-counter=16
       - --epsilon=0.0001
+      - --improvement=2
   - name: direct1d
-    cfgLabel: steps-16::eps=1e-6
+    cfgLabel: steps-16::eps=1e-4::imp=0
     extraArgs:
       - --step-counter=16
-      - --epsilon=0.000001
-  - name: direct1d
-    cfgLabel: steps-16::eps=1e-9
-    extraArgs:
-      - --step-counter=16
-      - --epsilon=0.000000001
-  - name: direct1d
-    cfgLabel: steps-14::eps=1e-4
-    extraArgs:
-      - --step-counter=14
       - --epsilon=0.0001
+      - --improvement=0
   - name: direct1d
-    cfgLabel: steps-14::eps=1e-6
+    cfgLabel: steps-15::eps=1e-5::imp=2
     extraArgs:
-      - --step-counter=14
-      - --epsilon=0.000001
+      - --step-counter=15
+      - --epsilon=0.00001
+      - --improvement=2
   - name: direct1d
-    cfgLabel: steps-14::eps=1e-9
+    cfgLabel: steps-15::eps=1e-5::imp=0
     extraArgs:
-      - --step-counter=14
-      - --epsilon=0.000000001
+      - --step-counter=15
+      - --epsilon=0.00001
+      - --improvement=0
 problemsFile: build/problems.txt
 queryLimit: 100000
 timeoutSecs: 60
