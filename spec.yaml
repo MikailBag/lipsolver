@@ -1,89 +1,89 @@
 solvers:
-  - name: solver
+  - name: lipschitz_solver
     cfgLabel: Geom-AL
     extraArgs:
       - --algorithm=Geom-AL
-  - name: solver
+  - name: lipschitz_solver
     cfgLabel: Geom-GL
     extraArgs:
       - --algorithm=Geom-GL
-  - name: solver
+  - name: lipschitz_solver
     cfgLabel: Geom-LTM
     extraArgs:
       - --algorithm=Geom-LTM
-  - name: solver
+  - name: lipschitz_solver
     cfgLabel: Geom-LTA
     extraArgs:
       - --algorithm=Geom-LTA
-  - name: solver
+  - name: lipschitz_solver
     cfgLabel: Geom-LTMA
     extraArgs:
       - --algorithm=Geom-LTMA
-  - name: solver
+  - name: lipschitz_solver
     cfgLabel: Geom-LTIMP
     extraArgs:
       - --algorithm=Geom-LTIMP
-  - name: solver
+  - name: lipschitz_solver
     cfgLabel: Geom-LTIAP
     extraArgs:
       - --algorithm=Geom-LTIAP
-  - name: solver
+  - name: lipschitz_solver
     cfgLabel: Geom-LTIMAP
     extraArgs:
       - --algorithm=Geom-LTIMAP
-  - name: solver
+  - name: lipschitz_solver
     cfgLabel: Geom-LTIMO
     extraArgs:
       - --algorithm=Geom-LTIMO
-  - name: solver
+  - name: lipschitz_solver
     cfgLabel: Geom-LTIAO
     extraArgs:
       - --algorithm=Geom-LTIAO
-  - name: solver
+  - name: lipschitz_solver
     cfgLabel: Geom-LTIMAO
     extraArgs:
       - --algorithm=Geom-LTIMAO
-  - name: solver
+  - name: lipschitz_solver
     cfgLabel: Inf-AL
     extraArgs:
       - --algorithm=Inf-AL
-  - name: solver
+  - name: lipschitz_solver
     cfgLabel: Inf-GL
     extraArgs:
       - --algorithm=Inf-GL
-  - name: solver
+  - name: lipschitz_solver
     cfgLabel: Inf-LTM
     extraArgs:
       - --algorithm=Inf-LTM
-  - name: solver
+  - name: lipschitz_solver
     cfgLabel: Inf-LTA
     extraArgs:
       - --algorithm=Inf-LTA
-  - name: solver
+  - name: lipschitz_solver
     cfgLabel: Inf-LTMA
     extraArgs:
       - --algorithm=Inf-LTMA
-  - name: solver
+  - name: lipschitz_solver
     cfgLabel: Inf-LTIMP
     extraArgs:
       - --algorithm=Inf-LTIMP
-  - name: solver
+  - name: lipschitz_solver
     cfgLabel: Inf-LTIAP
     extraArgs:
       - --algorithm=Inf-LTIAP
-  - name: solver
+  - name: lipschitz_solver
     cfgLabel: Inf-LTIMAP
     extraArgs:
       - --algorithm=Inf-LTIMAP
-  - name: solver
+  - name: lipschitz_solver
     cfgLabel: Inf-LTIMO
     extraArgs:
       - --algorithm=Inf-LTIMO
-  - name: solver
+  - name: lipschitz_solver
     cfgLabel: Inf-LTIAO
     extraArgs:
       - --algorithm=Inf-LTIAO
-  - name: solver
+  - name: lipschitz_solver
     cfgLabel: Inf-LTIMAO
     extraArgs:
       - --algorithm=Inf-LTIMAO
