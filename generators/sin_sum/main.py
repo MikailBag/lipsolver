@@ -21,7 +21,7 @@ def make_term():
     external_coef = gen_coef()
     internal_coef = gen_coef()
     shift = 0
-    return str(external_coef) + "*sin(" + str(internal_coef) + "*x + " + str(shift) + ")**2", external_coef
+    return str(external_coef) + "*sin(" + str(internal_coef) + "*x + " + str(shift) + ")**2", 2 * external_coef * internal_coef
 
 
 def generate_formula(seed):
@@ -44,7 +44,7 @@ if __name__ == "__main__":
         'a': -math.pi,
         'b': math.pi,
         'min_f': 0,
-        'min_x': 1,
+        'min_x': 0,
         'max_slope': lipschitz
     }
 

@@ -174,9 +174,9 @@ class Algorithm:
             lipschitz_constant_estimator,
             characteristic_calculator,
             subinterval_selector):
-        self.estimator = lipschitz_constant_estimator
-        self.calculator = characteristic_calculator
-        self.selector = subinterval_selector
+        self.lipschitz_constant_estimator = lipschitz_constant_estimator
+        self.characteristic_calculator = characteristic_calculator
+        self.subinterval_selector = subinterval_selector
         
 
 def find_min(f, a, b, eps, algo):
@@ -196,9 +196,9 @@ def find_min(f, a, b, eps, algo):
         for i in range(len(z)):
             if z[i] < z[i_min]:
                 i_min = i
-        l = algo.estimator.get(x, z)
-        R = algo.calculator.get(x, z, l)
-        t = algo.selector.get(global_phase, x, z, R, i_min, last_pick_was_optimal)
+        l = algo.lipschitz_constant_estimator.get(x, z)
+        R = algo.characteristic_calculator.get(x, z, l)
+        t = algo.subinterval_selector.get(global_phase, x, z, R, i_min, last_pick_was_optimal)
         global_phase ^= True
         if x[t] - x[t-1] <= eps:
             break
@@ -220,8 +220,6 @@ def find_min(f, a, b, eps, algo):
 
 def eval_at(x):
     eval_at.queries += 1
-    if eval_at.queries >= 1000:
-        return None
     print("%.10f" % x, flush=True)
     return float(input())
 eval_at.queries = 0
